@@ -6,6 +6,8 @@ const port = process.env.PORT || 3000;
 const conn = require('./db/conn');
 const Task = require('./models/Task');
 
+const routerTasks = require('./routers/routerTasks')
+
 app.engine('handlebars', ehb.engine());
 app.set('view engine', 'handlebars');
 
@@ -14,9 +16,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.render('home')
-})
+app.use('/tasks', routerTasks)
 
 conn.sync()
     .then((result) => {
