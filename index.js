@@ -4,6 +4,7 @@ const ehb = require('express-handlebars');
 const app = express();
 const port = process.env.PORT || 3000;
 const conn = require('./db/conn');
+const Task = require('./models/Task');
 
 app.engine('handlebars', ehb.engine());
 app.set('view engine', 'handlebars');
@@ -17,4 +18,10 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.listen(port, console.log(`Servidor rodando na porta ${port}`));
+conn.sync()
+    .then((result) => {
+    app.listen(port, console.log(`Servidor rodando na porta ${port}`));
+    })
+    .catch((err) => {
+    console.log(`Error ao execultar o servidor ${err}`);
+});
